@@ -67,8 +67,8 @@ const images = [
 const item = document.querySelector('.gallery')
 item.style.listStyleType = 'none';
 item.style.display = 'flex';
-item.style.width = '1128px'
-item.style.heigth = '648px'
+item.style.width = '1128px';
+item.style.height = '648px';
 item.style.flexWrap = 'wrap';
 item.style.gap = '24px';
 item.style.rowGap = '24px';
@@ -80,14 +80,14 @@ item.style.alignIems = 'center';
 
 item.innerHTML = images.reduce((html, {preview, original, description }) => html + `
  <li class="gallery-item">
-    <a class="gallery-link" href=${original}>
+    <a class="gallery-link" href="${original}">
       <img
         class="gallery-image"
         src="${preview}"
         data-source="${original}"
         alt="${description}"
         width = "360"
-        heigth = "200"
+        height = "200"
       />
     </a>`,
   "");
@@ -111,9 +111,9 @@ item.addEventListener('click', (event) => {
 
   let myModal = basicLightbox.create(`
     <img src="${original}"
-      alt="${description}
+      alt="${description}"
       width = "1440"
-      heigth = "700">`,
+      height = "700">`,
       {
         onShow: () => {addEventListener('keydown', handleKeyDown) },
         onClose: () => {removeEventListener('keydown', handleKeyDown)}
@@ -123,3 +123,9 @@ item.addEventListener('click', (event) => {
 
 });
 
+
+function handleKeyDown(event) {
+  if (event.key === 'Escape') {
+      myModal.close();
+    }
+};
