@@ -64,34 +64,17 @@ const images = [
   },
 ];
 
-const item = document.querySelector('.gallery')
-item.style.listStyleType = 'none';
-item.style.display = 'flex';
-item.style.width = '1128px';
-item.style.height = '648px';
-item.style.flexWrap = 'wrap';
-item.style.gap = '24px';
-item.style.rowGap = '24px';
-item.style.paddingTop = '24px';
-item.style.paddingLeft = '156px';
-item.style.paddingRight = '156px';
-item.style.paddingBottom = '24px';
-item.style.alignIems = 'center';
+const item = document.querySelector('.gallery');
 
-item.innerHTML = images.reduce((html, {preview, original, description }) => html + `
- <li class="gallery-item">
+item.innerHTML = images.map(({ preview, original, description }) => `
+  <li class="gallery-item">
     <a class="gallery-link" href="${original}">
-      <img
-        class="gallery-image"
-        src="${preview}"
-        data-source="${original}"
-        alt="${description}"
-        width = "360"
-        height = "200"
-      />
-    </a>`,
-  "");
+      <img class="gallery-image" src="${preview}" data-source="${original}" alt="${description}" width="360" height="200" />
+    </a>
+  </li>
+`).join('');
 
+let myModal;
 
 item.addEventListener('click', (event) => {
   event.preventDefault();
@@ -102,28 +85,17 @@ item.addEventListener('click', (event) => {
     return;
 
   const { preview, original, description } = images.find(image => image.original === imgSource);
-
-  let handleKeyDown = (event) => {
-    if (event.key === 'Escape') {
-      myModal.close();
-    }
-  };
-
-  let myModal = basicLightbox.create(`
+  myModal = basicLightbox.create(`
     <img src="${original}"
       alt="${description}"
       width = "1440"
       height = "700">`,
       {
-        onShow: () => {addEventListener('keydown', handleKeyDown) },
-        onClose: () => {removeEventListener('keydown', handleKeyDown)}
+        onShow: () => {document.addEventListener('keydown', handleKeyDown)},
+        onClose: () => {document.removeEventListener('keydown', handleKeyDown)}
   });
-
   myModal.show();
-
 });
-
-
 function handleKeyDown(event) {
   if (event.key === 'Escape') {
       myModal.close();
